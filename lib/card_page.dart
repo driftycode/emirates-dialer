@@ -45,6 +45,7 @@ class CardPageState extends State<CardPage> {
       print(_details[0]);
       print(_details[1]);
       _textController.text = _details[0];
+      _referPractice = _details[1];
     } else
       print("No card details are stored");
   }

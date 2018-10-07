@@ -44,6 +44,30 @@ class _RecentPageState extends State<RecentsPage> {
     return employees;
   }
 
+  final makeListTile = ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      leading: Container(
+        padding: EdgeInsets.only(right: 12.0),
+        decoration: new BoxDecoration(
+            border: new Border(
+                right: new BorderSide(width: 1.0, color: Colors.white24))),
+        child: Icon(Icons.autorenew, color: Colors.white),
+      ),
+      title: Text(
+        "Introduction to Driving",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+      subtitle: Row(
+        children: <Widget>[
+          Icon(Icons.linear_scale, color: Colors.yellowAccent),
+          Text(" Intermediate", style: TextStyle(color: Colors.white))
+        ],
+      ),
+      trailing:
+          Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0));
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -78,13 +102,9 @@ class _RecentPageState extends State<RecentsPage> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       new Text(snapshot.data[index].name,
-                                          style: new TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18.0)),
+                                          style: _textStyle(18.0)),
                                       new Text(snapshot.data[index].mobileNo,
-                                          style: new TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14.0)),
+                                          style: _textStyle(14.0)),
                                       new Divider()
                                     ]);
                               });
@@ -103,6 +123,10 @@ class _RecentPageState extends State<RecentsPage> {
               ),
         ));
   }
+}
+
+_textStyle(double fontSize) {
+  return new TextStyle(fontWeight: FontWeight.w400, fontSize: fontSize);
 }
 
 _storeDialedNumberToDB(BuildContext context, RecentCall callRecord) async {
@@ -144,7 +168,11 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
             ),
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              _launchURL(dialogContext, contactRecord.phoneNumber.number,
+              var url = "tel:9908693377";
+
+              // _launchURL(context, contactRecord.phoneNumber.number,
+              //     contactRecord.phoneNumber.label);
+              _launchURL(contactRecord.phoneNumber.number,
                   contactRecord.phoneNumber.label);
             },
           ),
@@ -161,37 +189,47 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
   );
 }
 
-_launchURL(context, String mobileNumber, String name) async {
-  String url = "tel://" + mobileNumber;
-  var timestampCallLog = new DateTime.now().toString();
-  print(timestampCallLog);
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  var details = prefs.getStringList("CARD_DETAILS");
-  if (details != null) {
-    print(details.length);
-    print(details[0]);
-    print(details[1]);
-    if (url != null) {
-      if (url.contains("-")) url = url.replaceAll("-", "");
-      if (url.contains("(")) url = url.replaceAll("(", "");
-      if (url.contains(")")) url = url.replaceAll(")", "");
-    }
-
-    print(url);
-
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-    // storing call info in database
-    RecentCall recentCall =
-        new RecentCall(name, mobileNumber, "", timestampCallLog, details[1]);
-    _storeDialedNumberToDB(context, recentCall);
+_launchURL(String mobileNumber, String name) async {
+  String url = "tel:" + mobileNumber;
+  if (await canLaunch(url)) {
+    await launch(url);
   } else {
-    print("no card details are saved");
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(content: Text("No card details are saved")));
+    throw 'Could not launch $url';
   }
 }
+
+// _launchURL(context, String mobileNumber, String name) async {
+//   String url = "tel://" + mobileNumber;
+//   var timestampCallLog = new DateTime.now().toString();
+//   print(timestampCallLog);
+
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   var details = prefs.getStringList("CARD_DETAILS");
+//   if (details != null) {
+//     print(details.length);
+//     print(details[0]);
+//     print(details[1]);
+//     if (url != null) {
+//       if (url.contains("-")) url = url.replaceAll("-", "");
+//       if (url.contains("(")) url = url.replaceAll("(", "");
+//       if (url.contains(")")) url = url.replaceAll(")", "");
+//     }
+
+//     print(url);
+
+//     // storing call info in database
+//     RecentCall recentCall =
+//         new RecentCall(name, mobileNumber, "", timestampCallLog, details[1]);
+//     _storeDialedNumberToDB(context, recentCall);
+
+//     if (await canLaunch(url)) {
+//       await launch(url);
+//     } else {
+//       throw 'Could not launch $url';
+//     }
+//   } else {
+//     print("no card details are saved");
+//     Scaffold.of(context)
+//         .showSnackBar(SnackBar(content: Text("No card details are saved")));
+//   }
+// }
