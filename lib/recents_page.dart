@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:uaedialer/database/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uaedialer/models/recentCall.dart';
+import 'package:uaedialer/utils/constants.dart';
 
 class RecentsPage extends StatefulWidget {
   @override
@@ -191,10 +192,10 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
               Navigator.of(dialogContext).pop();
               var url = "tel:9908693377";
 
-              // _launchURL(context, contactRecord.phoneNumber.number,
-              //     contactRecord.phoneNumber.label);
-              _launchURL(contactRecord.phoneNumber.number,
+              _launchURL(context, contactRecord.fullName, contactRecord.phoneNumber.number,
                   contactRecord.phoneNumber.label);
+              // _launchURL(contactRecord.phoneNumber.number,
+              //     contactRecord.phoneNumber.label);
             },
           ),
           new FlatButton(
@@ -210,47 +211,56 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
   );
 }
 
-_launchURL(String mobileNumber, String name) async {
-  String url = "tel:" + mobileNumber;
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
-  }
-}
-
-// _launchURL(context, String mobileNumber, String name) async {
-//   String url = "tel://" + mobileNumber;
-//   var timestampCallLog = new DateTime.now().toString();
-//   print(timestampCallLog);
-
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   var details = prefs.getStringList("CARD_DETAILS");
-//   if (details != null) {
-//     print(details.length);
-//     print(details[0]);
-//     print(details[1]);
-//     if (url != null) {
-//       if (url.contains("-")) url = url.replaceAll("-", "");
-//       if (url.contains("(")) url = url.replaceAll("(", "");
-//       if (url.contains(")")) url = url.replaceAll(")", "");
-//     }
-
-//     print(url);
-
-//     // storing call info in database
-//     RecentCall recentCall =
-//         new RecentCall(name, mobileNumber, "", timestampCallLog, details[1]);
-//     _storeDialedNumberToDB(context, recentCall);
-
-//     if (await canLaunch(url)) {
-//       await launch(url);
-//     } else {
-//       throw 'Could not launch $url';
-//     }
+// _launchURL(String mobileNumber, String name) async {
+//   String url = "tel:" + mobileNumber;
+//   if (await canLaunch(url)) {
+//     await launch(url);
 //   } else {
-//     print("no card details are saved");
-//     Scaffold.of(context)
-//         .showSnackBar(SnackBar(content: Text("No card details are saved")));
+//     throw 'Could not launch $url';
 //   }
 // }
+
+_launchURL(context, String name, String mobileNumber, String type) async {
+
+
+  // Dialer number with have etisalat dial number, and card number which is registered in the mobile app
+  var mobileNumberWithCode = mobileNumber;
+  var timestampCallLog = new DateTime.now().toString();
+  print(timestampCallLog);
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var details = prefs.getStringList("CARD_DETAILS");
+  if (details != null) {
+    print(details.length);
+    print(details[0]);
+    print(details[1]);
+
+     if (mobileNumberWithCode != null) {
+      if (mobileNumberWithCode.contains("-")) mobileNumberWithCode = mobileNumberWithCode.replaceAll("-", "");
+      if (mobileNumberWithCode.contains("(")) mobileNumberWithCode = mobileNumberWithCode.replaceAll("(", "");
+      if (mobileNumberWithCode.contains(")")) mobileNumberWithCode = mobileNumberWithCode.replaceAll(")", "");
+      if(mobileNumberWithCode.contains(details[1])) mobileNumberWithCode = mobileNumberWithCode.replace('Hello', 'Hy');
+    }
+
+    String url = "tel:" + ETISALAT_DAIL_NUMBER + details[0] + "#,,,,," + mobileNumberWithCode;
+
+   
+
+    print(url);
+
+    // storing call info in database
+    RecentCall recentCall =
+        new RecentCall(name, mobileNumber, type, timestampCallLog, details[1]);
+    _storeDialedNumberToDB(context, recentCall);
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  } else {
+    print("no card details are saved");
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text("No card details are saved")));
+  }
+}

@@ -60,3 +60,5 @@ const GO_MORE = '/more';
 const GO_HELP = '/help';
 const GO_ABOUTUS = '/aboutus';
 const GO_SETTINGS = '/settings';
+
+const ETISALAT_DAIL_NUMBER = "800505,9,";
