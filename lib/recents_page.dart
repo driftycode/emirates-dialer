@@ -6,6 +6,7 @@ import 'package:uaedialer/database/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uaedialer/models/recentCall.dart';
 import 'package:uaedialer/utils/constants.dart';
+import 'package:flutter/services.dart';
 
 class RecentsPage extends StatefulWidget {
   @override
@@ -174,7 +175,7 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
                 maxLines: 1,
                 decoration: new InputDecoration(hintText: 'Number'),
                 keyboardType: TextInputType.number,
-                autofocus: true,
+                autofocus: false,
                 initialValue: contactRecord.phoneNumber.number,
               ),
               //new Text(contactRecord.fullName),
@@ -192,7 +193,10 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
               Navigator.of(dialogContext).pop();
               var url = "tel:9908693377";
 
-              _launchURL(context, contactRecord.fullName, contactRecord.phoneNumber.number,
+              _launchURL(
+                  context,
+                  contactRecord.fullName,
+                  contactRecord.phoneNumber.number,
                   contactRecord.phoneNumber.label);
               // _launchURL(contactRecord.phoneNumber.number,
               //     contactRecord.phoneNumber.label);
@@ -221,8 +225,6 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
 // }
 
 _launchURL(context, String name, String mobileNumber, String type) async {
-
-
   // Dialer number with have etisalat dial number, and card number which is registered in the mobile app
   var mobileNumberWithCode = mobileNumber;
   var timestampCallLog = new DateTime.now().toString();
@@ -234,17 +236,27 @@ _launchURL(context, String name, String mobileNumber, String type) async {
     print(details.length);
     print(details[0]);
     print(details[1]);
+    print(details[2]);
 
-     if (mobileNumberWithCode != null) {
-      if (mobileNumberWithCode.contains("-")) mobileNumberWithCode = mobileNumberWithCode.replaceAll("-", "");
-      if (mobileNumberWithCode.contains("(")) mobileNumberWithCode = mobileNumberWithCode.replaceAll("(", "");
-      if (mobileNumberWithCode.contains(")")) mobileNumberWithCode = mobileNumberWithCode.replaceAll(")", "");
-      if(mobileNumberWithCode.contains(details[1])) mobileNumberWithCode = mobileNumberWithCode.replace('Hello', 'Hy');
+    if (mobileNumberWithCode != null) {
+      if (mobileNumberWithCode.contains("-"))
+        mobileNumberWithCode = mobileNumberWithCode.replaceAll("-", "");
+      if (mobileNumberWithCode.contains("("))
+        mobileNumberWithCode = mobileNumberWithCode.replaceAll("(", "");
+      if (mobileNumberWithCode.contains(")"))
+        mobileNumberWithCode = mobileNumberWithCode.replaceAll(")", "");
+      mobileNumberWithCode = mobileNumberWithCode + '#';
+      // if (mobileNumberWithCode.contains(details[1]))
+      //   mobileNumberWithCode =
+      //       mobileNumberWithCode.replaceFirstMapped(details[1], "0091");
     }
 
-    String url = "tel:" + ETISALAT_DAIL_NUMBER + details[0] + "#,,,,," + mobileNumberWithCode;
-
-   
+    String url = "tel:" +
+        ETISALAT_DAIL_NUMBER +
+        details[0] +
+        "#,,,,," +
+        details[2] +
+        mobileNumberWithCode;
 
     print(url);
 

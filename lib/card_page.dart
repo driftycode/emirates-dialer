@@ -5,6 +5,7 @@ import 'dart:async';
 // import 'package:uae_dialer/services/utils_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/circle_button.dart';
+import 'package:flutter/services.dart';
 
 class CardPage extends StatefulWidget {
   @override
@@ -117,6 +118,7 @@ class CardPageState extends State<CardPage> {
                       color: Colors.green,
                       child: new Text(BTN_ADD_TEXT),
                       onPressed: () {
+                        SystemChannels.textInput.invokeMethod('TextInput.hide');
                         if (_formKey.currentState.validate() &&
                             _referPractice != null) {
                           _storeCardNumberAndCountryCode(
@@ -148,10 +150,12 @@ class CardPageState extends State<CardPage> {
 
 _storeCardNumberAndCountryCode(String number, String countryCode) async {
   print(" ${number} code ${countryCode}");
+  var stdCode = countryCode.replaceAll("+", "00");
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final cardDetails = new List<String>();
   cardDetails.add(number);
   cardDetails.add(countryCode);
+  cardDetails.add(stdCode);
 
   await prefs.setStringList("CARD_DETAILS", cardDetails);
   // var details = prefs.getStringList("CARD_DETAILS");
