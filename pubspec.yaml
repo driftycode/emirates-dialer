@@ -26,11 +26,12 @@ dependencies:
   sqflite : any
   url_launcher: ^3.0.3
   path_provider: ^0.4.1
+  splashscreen: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+ 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -48,6 +49,7 @@ flutter:
    - assets/images/logo.png
    - assets/country_codes.json
    - assets/images/dc-short-logo.png
+   - assets/images/app_logo.png
 
 
   fonts:

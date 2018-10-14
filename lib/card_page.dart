@@ -61,6 +61,12 @@ class CardPageState extends State<CardPage> {
           padding: const EdgeInsets.all(15.0),
           child: new Column(
             children: <Widget>[
+              new Text.rich(
+                TextSpan(
+                  text: 'Enter Card Number',
+                  style: TextStyle(fontSize: 18.0), // default text style
+                ),
+              ),
               TextFormField(
                 controller: _textController,
                 keyboardType: TextInputType.number,
@@ -86,62 +92,104 @@ class CardPageState extends State<CardPage> {
                 },
               ),
               new Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.fromLTRB(5.0, 25.0, 25.0, 40.0),
                   child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      DropdownButton<String>(
-                        value: _referPractice,
-                        isDense: true,
-                        hint: new Text(CONST_SELECT),
-                        items: _stdCodesList.map((value) {
-                          return new DropdownMenuItem<String>(
-                            value: value.dialCode,
-                            child: new Text("${value.code} ${value.dialCode}"),
-                          );
-                        }).toList(),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            _referPractice = newValue;
-                          });
-                        },
-                      )
+                      new Row(children: <Widget>[
+                        new Expanded(
+                          child: Text.rich(
+                            TextSpan(
+                              text: 'Country Code',
+                              style: TextStyle(
+                                  fontSize: 18.0), // default text style
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: '*',
+                                    style: TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        color: Colors.red,
+                                        fontSize: 18.0))
+                              ],
+                            ),
+                          ),
+                          flex: 3,
+                        ),
+                        new DropdownButtonHideUnderline(
+                          child: new DropdownButton<String>(
+                            value: _referPractice,
+                            isDense: true,
+                            hint: new Text(CONST_SELECT),
+                            items: _stdCodesList.map((value) {
+                              return new DropdownMenuItem<String>(
+                                value: value.dialCode,
+                                child: new Text(
+                                    "${value.code} ${value.dialCode}",
+                                    style: TextStyle(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w600)),
+                              );
+                            }).toList(),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _referPractice = newValue;
+                              });
+                            },
+                          ),
+                        )
+                      ])
                     ],
                   )),
               new Container(
+                  // height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(10.0),
-                  child: new Row(children: <Widget>[
-                    RaisedButton(
-                      padding:
-                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      textColor: Colors.white,
-                      color: Colors.green,
-                      child: new Text(BTN_ADD_TEXT),
-                      onPressed: () {
-                        SystemChannels.textInput.invokeMethod('TextInput.hide');
-                        if (_formKey.currentState.validate() &&
-                            _referPractice != null) {
-                          _storeCardNumberAndCountryCode(
-                              _textController.text.trim(), _referPractice);
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text(SUCCESSFUL_CARD_DETAILS)));
-                        } else {
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text(ERROR_COUNTRY_CODE)));
-                        }
-                      },
-                    ),
-                    RaisedButton(
-                      padding:
-                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      textColor: Colors.white,
-                      color: Colors.red,
-                      child: new Text(BTN_CLEAR_TEXT),
-                      onPressed: () {
-                        _textController.clear();
-                      },
-                    )
-                  ])),
+                  padding: EdgeInsets.all(5.0),
+                  child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new Expanded(
+                          child: new Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: new MaterialButton(
+                                height: 40.0,
+                                minWidth: 100.0,
+                                textColor: Colors.white,
+                                color: Colors.green,
+                                child: new Text(BTN_ADD_TEXT),
+                                onPressed: () {
+                                  SystemChannels.textInput
+                                      .invokeMethod('TextInput.hide');
+                                  if (_formKey.currentState.validate() &&
+                                      _referPractice != null) {
+                                    _storeCardNumberAndCountryCode(
+                                        _textController.text.trim(),
+                                        _referPractice);
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                        content:
+                                            Text(SUCCESSFUL_CARD_DETAILS)));
+                                  } else {
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                        content: Text(ERROR_COUNTRY_CODE)));
+                                  }
+                                },
+                              )),
+                          flex: 2,
+                        ),
+                        new Expanded(
+                            child: new Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: new MaterialButton(
+                                  height: 40.0,
+                                  minWidth: 100.0,
+                                  textColor: Colors.white,
+                                  color: Colors.red,
+                                  child: new Text(BTN_CLEAR_TEXT),
+                                  onPressed: () {
+                                    _textController.clear();
+                                  },
+                                )),
+                            flex: 2)
+                      ])),
             ],
           )),
     );

@@ -7,11 +7,28 @@ import 'more/help_page.dart';
 import 'more/aboutus_page.dart';
 import 'more/settings.dart';
 import 'utils/constants.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        home: new SplashScreen(
+            seconds: 10,
+            navigateAfterSeconds: new AfterSplash(),
+            title: new Text('Welcome In UAEDialer'),
+            image: new Image.asset('assets/images/app_logo.png'),
+            backgroundColor: Colors.white,
+            styleTextUnderTheLoader: new TextStyle(),
+            photoSize: 100.0,
+            loaderColor: Colors.red));
+  }
+}
+
+class AfterSplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -34,42 +51,3 @@ class MyApp extends StatelessWidget {
         });
   }
 }
-
-// class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//       title: 'UAE Dialer',
-//       theme: new ThemeData(
-//         primarySwatch: Colors.red, accentColor: Colors.black,
-
-//       ),
-//       home: DefaultTabController(
-//         length: 4,
-//         child: Scaffold(
-//           appBar: AppBar(
-//             bottom: TabBar(
-//               tabs: [
-//                 Tab(icon: Icon(Icons.restore)),
-//                 // Tab(icon: Icon(Icons.favorite)),
-//                 Tab(icon: Icon(Icons.card_giftcard)),
-//                 Tab(icon: Icon(Icons.bubble_chart))
-//               ],
-//             ),
-//             title: Text('UAE Dialer'),
-//           ),
-//           body: TabBarView(
-//             children: [
-//               RecentsPage(),
-//               // FavouritesPage(),
-//               CardPage(),
-//               // ContactsPage(),
-//               MorePage(),
-//             ],
-//           ),
-//         ),
-//       )//ContactsPage()
-//     );
-//   }
-// }

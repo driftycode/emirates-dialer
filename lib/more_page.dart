@@ -15,7 +15,9 @@ class MorePage extends StatelessWidget {
       children: [
         ListTile(
           onTap: () {
-            Navigator.pushNamed(context, GO_SETTINGS);
+            // Navigator.pushNamed(context, GO_SETTINGS);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => Settings()));
           },
           leading: Icon(Icons.settings),
           title: Text('Settings'),

@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uaedialer/models/recentCall.dart';
 import 'package:uaedialer/utils/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:uaedialer/card_page.dart';
 
 class RecentsPage extends StatefulWidget {
   @override
@@ -18,7 +19,6 @@ class RecentsPage extends StatefulWidget {
 class _RecentPageState extends State<RecentsPage> {
   final ContactPicker _contactPicker = new ContactPicker();
   Contact _contact;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -48,46 +48,46 @@ class _RecentPageState extends State<RecentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final makeListTile = ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        leading: Container(
-          padding: EdgeInsets.only(right: 12.0),
-          decoration: new BoxDecoration(
-              border: new Border(
-                  right: new BorderSide(width: 1.0, color: Colors.black26))),
-          child: Icon(Icons.call, color: Colors.red),
-        ),
-        title: Text(
-          "Introduction to Driving",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        subtitle: Row(
-          children: <Widget>[
-            Icon(Icons.linear_scale, color: Colors.blueGrey),
-            Text(" Intermediate", style: TextStyle(color: Colors.black))
-          ],
-        ),
-        trailing: Icon(Icons.call_made, color: Colors.black, size: 30.0));
+    // final makeListTile = ListTile(
+    //     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+    //     leading: Container(
+    //       padding: EdgeInsets.only(right: 12.0),
+    //       decoration: new BoxDecoration(
+    //           border: new Border(
+    //               right: new BorderSide(width: 1.0, color: Colors.black26))),
+    //       child: Icon(Icons.call, color: Colors.red),
+    //     ),
+    //     title: Text(
+    //       "Introduction to Driving",
+    //       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+    //     ),
+    //     subtitle: Row(
+    //       children: <Widget>[
+    //         Icon(Icons.linear_scale, color: Colors.blueGrey),
+    //         Text(" Intermediate", style: TextStyle(color: Colors.black))
+    //       ],
+    //     ),
+    //     trailing: Icon(Icons.call_made, color: Colors.black, size: 30.0));
 
-    final makeCard = Card(
-      elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 5.0, vertical: 6.0),
-      child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(241, 241, 241, .8)),
-        child: makeListTile,
-      ),
-    );
+    // final makeCard = Card(
+    //   elevation: 8.0,
+    //   margin: new EdgeInsets.symmetric(horizontal: 5.0, vertical: 6.0),
+    //   child: Container(
+    //     decoration: BoxDecoration(color: Color.fromRGBO(241, 241, 241, .8)),
+    //     child: makeListTile,
+    //   ),
+    // );
 
-    final makeBody = Container(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) {
-          return makeCard;
-        },
-      ),
-    );
+    // final makeBody = Container(
+    //   child: ListView.builder(
+    //     scrollDirection: Axis.vertical,
+    //     shrinkWrap: true,
+    //     itemCount: 10,
+    //     itemBuilder: (BuildContext context, int index) {
+    //       return makeCard;
+    //     },
+    //   ),
+    // );
 
     return new Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -121,9 +121,9 @@ class _RecentPageState extends State<RecentsPage> {
                               itemBuilder: (BuildContext context, int index) {
                                 print(snapshot.data[index]);
                                 return Card(
-                                  elevation: 8.0,
+                                  elevation: 4.0,
                                   margin: new EdgeInsets.symmetric(
-                                      horizontal: 5.0, vertical: 6.0),
+                                      horizontal: 2.0, vertical: 5.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                         color:
@@ -170,7 +170,6 @@ class _RecentPageState extends State<RecentsPage> {
                               },
                             ),
                           );
-
                           // return new ListView.builder(
                           //     itemCount: snapshot.data.length,
                           //     itemBuilder: (context, index) {
@@ -190,11 +189,6 @@ class _RecentPageState extends State<RecentsPage> {
                           return new Text("${snapshot.error}");
                         }
                     }
-
-                    // return new Container(
-                    //   alignment: AlignmentDirectional.center,
-                    //   child: new CircularProgressIndicator(),
-                    // );
                   },
                 ),
               ),
@@ -202,15 +196,20 @@ class _RecentPageState extends State<RecentsPage> {
   }
 }
 
-_textStyle(double fontSize) {
-  return new TextStyle(fontWeight: FontWeight.w400, fontSize: fontSize);
-}
+// _textStyle(double fontSize) {
+//   return new TextStyle(fontWeight: FontWeight.w400, fontSize: fontSize);
+// }
 
 _storeDialedNumberToDB(BuildContext context, RecentCall callRecord) async {
   DBHelper db = new DBHelper();
   print(callRecord);
   db.saveRecentCall(callRecord);
   print("saved details");
+}
+
+_retryPressed(BuildContext context) {
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (BuildContext context) => CardPage()));
 }
 
 Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
@@ -283,6 +282,7 @@ _launchURL(context, String name, String mobileNumber, String type) async {
   var mobileNumberWithCode = mobileNumber;
   var timestampCallLog = new DateTime.now().toString();
   print(timestampCallLog);
+  var _buildContext = context;
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var details = prefs.getStringList("CARD_DETAILS");
@@ -326,7 +326,15 @@ _launchURL(context, String name, String mobileNumber, String type) async {
     }
   } else {
     print("no card details are saved");
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(content: Text("No card details are saved")));
+    // Scaffold.of(context)
+    //     .showSnackBar(SnackBar(content: Text("No card details are saved")));
+    Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text('No card details are saved'),
+      duration: new Duration(seconds: 5),
+      action: new SnackBarAction(
+        label: 'CARD PAGE',
+        onPressed: _retryPressed(_buildContext),
+      ),
+    ));
   }
 }
