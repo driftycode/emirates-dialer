@@ -61,15 +61,20 @@ class CardPageState extends State<CardPage> {
           padding: const EdgeInsets.all(15.0),
           child: new Column(
             children: <Widget>[
-              new Text.rich(
-                TextSpan(
-                  text: 'Enter Card Number',
-                  style: TextStyle(fontSize: 18.0), // default text style
-                ),
-              ),
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text.rich(
+                      TextSpan(
+                        text: 'Enter Card Number',
+                        style: TextStyle(fontSize: 18.0), // default text style
+                      ),
+                    )
+                  ]),
               TextFormField(
                 controller: _textController,
                 keyboardType: TextInputType.number,
+                maxLength: 15,
                 style: new TextStyle(
                   fontWeight: FontWeight.w200,
                   color: Colors.black,

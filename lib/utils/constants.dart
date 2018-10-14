@@ -44,7 +44,7 @@ const String CARD_DETAILS = "card_details";
 const CONST_SELECT = "Select";
 
 // Hints
-const HING_ENTER_NUMBER = 'Enter Card Number';
+const HING_ENTER_NUMBER = '12345-XXXXX-09989';
 
 // error messages
 const ERROR_CARD_DETAILS = "Please enter VALID CARD number";
