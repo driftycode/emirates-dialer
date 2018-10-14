@@ -27,11 +27,20 @@ dependencies:
   url_launcher: ^3.0.3
   path_provider: ^0.4.1
   splashscreen: ^1.1.0
+  flutter_launcher_icons: "^0.6.1"
+  # firebase_messaging: ^2.0.1
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
  
+flutter_icons:
+  android: true 
+  ios: true
+  image_path: "icon/icon.png"
+  adaptive_icon_background: "#FFFFFF"
+  # adaptive_icon_foreground: "assets/icon/icon-foreground.png"    
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

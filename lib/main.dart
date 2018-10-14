@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         home: new SplashScreen(
             seconds: 10,
             navigateAfterSeconds: new AfterSplash(),
-            title: new Text('Welcome In UAEDialer'),
+            title: new Text('Welcome to UAEDialer'),
             image: new Image.asset('assets/images/app_logo.png'),
             backgroundColor: Colors.white,
             styleTextUnderTheLoader: new TextStyle(),
