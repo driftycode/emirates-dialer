@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
-import 'more/help_page.dart';
-import 'more/aboutus_page.dart';
 import 'more/settings.dart';
 import 'utils/constants.dart';
+import 'package:launch_review/launch_review.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatelessWidget {
+  // email launcher for help screen
+  _launchEmail() async {
+    const url = 'mailto:hello@driftycode?subject=Help from UAEDialer';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -36,12 +46,22 @@ class MorePage extends StatelessWidget {
         ListTile(
           onTap: () {
             // navigate to help screen
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (BuildContext context) => Help()));
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (BuildContext context) => Help()));
+            _launchEmail();
           },
           leading: Icon(Icons.help),
           title: Text('Help'),
           subtitle: Text('For any kind of support or help'),
+        ),
+        ListTile(
+          onTap: () {
+            LaunchReview.launch(
+                androidAppId: "com.facebook.katana", iOSAppId: "284882215");
+          },
+          leading: Icon(Icons.rate_review),
+          title: Text('Rate us'),
+          subtitle: Text('Your feedback is valuable to us to improve quality'),
         ),
       ],
     ));

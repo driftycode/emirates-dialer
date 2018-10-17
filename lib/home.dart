@@ -39,14 +39,14 @@ class _HomeState extends State<Home> {
         items: [
           new BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Recents'),
+            title: Text('Recent Calls'),
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.restore),
-            title: Text('Card'),
+            title: Text('Register Card'),
           ),
           new BottomNavigationBarItem(
-              icon: Icon(Icons.bubble_chart), title: Text('Settings'))
+              icon: Icon(Icons.bubble_chart), title: Text('More'))
         ],
       ),
     );
