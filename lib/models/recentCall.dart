@@ -1,14 +1,16 @@
 class RecentCall {
+  int id;
   String name;
   String mobileNo;
   String numberType;
   String timestamp;
   String countryCode;
 
-  RecentCall(this.name, this.mobileNo, this.numberType, this.timestamp,
+  RecentCall(this.id, this.name, this.mobileNo, this.numberType, this.timestamp,
       this.countryCode);
 
   RecentCall.fromMap(Map map) {
+    id = map[id];
     name = map[name];
     mobileNo = map[mobileNo];
     numberType = map[numberType];

@@ -21,6 +21,8 @@ class CardPageState extends State<CardPage> {
   var _referPractice;
   final _textController = TextEditingController();
   var _details;
+  double _result = 0.0;
+  int _radioValue = 0;
 
   @override
   initState() {
@@ -45,10 +47,32 @@ class CardPageState extends State<CardPage> {
       print(_details.length);
       print(_details[0]);
       print(_details[1]);
+      print(_details[2]);
+      print(_details[3]);
       _textController.text = _details[0];
       _referPractice = _details[1];
+      if (_details[3] != null) _radioValue = int.parse(_details[3]);
     } else
       print("No card details are stored");
+  }
+
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      _radioValue = value;
+      print(value);
+
+      // switch (_radioValue) {
+      //   case 0:
+      //     _result =
+      //     break;
+      //   case 1:
+      //     _result =
+      //     break;
+      //   case 2:
+      //     _result =
+      //     break;
+      // }
+    });
   }
 
   // final buttons =
@@ -61,6 +85,50 @@ class CardPageState extends State<CardPage> {
           padding: const EdgeInsets.all(15.0),
           child: new Column(
             children: <Widget>[
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text.rich(
+                      TextSpan(
+                        text: 'Select your Recharge Provider',
+                        style: TextStyle(fontSize: 18.0), // default text style
+                      ),
+                    )
+                  ]),
+              new Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 20.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        new Radio(
+                          value: 1,
+                          groupValue: _radioValue,
+                          onChanged: _handleRadioValueChange,
+                        ),
+                        new Text.rich(
+                          TextSpan(
+                            text: 'Etisalat (Five card)',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight:
+                                    FontWeight.bold), // default text style
+                          ),
+                        ),
+                        new Radio(
+                          value: 2,
+                          groupValue: _radioValue,
+                          onChanged: _handleRadioValueChange,
+                        ),
+                        new Text.rich(
+                          TextSpan(
+                            text: 'Du (Hello Card)',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight:
+                                    FontWeight.bold), // default text style
+                          ),
+                        ),
+                      ])),
               new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -160,13 +228,15 @@ class CardPageState extends State<CardPage> {
                                 minWidth: 100.0,
                                 textColor: Colors.white,
                                 color: Colors.green,
-                                child: new Text(BTN_ADD_TEXT),
+                                child: new Text(BTN_SAVE_TEXT),
                                 onPressed: () {
+                                  print(_radioValue);
                                   SystemChannels.textInput
                                       .invokeMethod('TextInput.hide');
                                   if (_formKey.currentState.validate() &&
                                       _referPractice != null) {
                                     _storeCardNumberAndCountryCode(
+                                        _radioValue,
                                         _textController.text.trim(),
                                         _referPractice);
                                     Scaffold.of(context).showSnackBar(SnackBar(
@@ -201,18 +271,18 @@ class CardPageState extends State<CardPage> {
   }
 }
 
-_storeCardNumberAndCountryCode(String number, String countryCode) async {
-  print(" ${number} code ${countryCode}");
+_storeCardNumberAndCountryCode(
+    int cardSelection, String number, String countryCode) async {
+  // print(" ${number} code ${countryCode}");
   var stdCode = countryCode.replaceAll("+", "00");
+  stdCode = stdCode.replaceAll(" ", "");
+  print(stdCode);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final cardDetails = new List<String>();
   cardDetails.add(number);
   cardDetails.add(countryCode);
   cardDetails.add(stdCode);
+  cardDetails.add(cardSelection.toString());
 
   await prefs.setStringList("CARD_DETAILS", cardDetails);
-  // var details = prefs.getStringList("CARD_DETAILS");
-  // print(details.length);
-  // print(details[0]);
-  // print(details[1]);
 }

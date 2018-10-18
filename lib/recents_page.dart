@@ -26,20 +26,6 @@ class _RecentPageState extends State<RecentsPage> {
     //_getRecentcallFromDb();
   }
 
-  // Future<List<RecentCall>> _getRecentcallFromDb() async {
-  //   Future<List<RecentCall>> recentCallList;
-  //   var dbHelper = DBHelper();
-  //   var newCall = RecentCall("test", "00919908693377", "IND",
-  //       "17/09/18 06:15:31.497000000 AM", "+91");
-
-  //   dbHelper.saveRecentCall(newCall);
-
-  //   print("Called database to fetch records");
-  //   recentCallList = dbHelper.getRecentCallsList();
-  //   print(recentCallList);
-  //   return recentCallList;
-  // }
-
   Future<List<RecentCall>> _getRecentcallFromDb() async {
     var dbHelper = DBHelper();
     Future<List<RecentCall>> employees = dbHelper.getRecentCallsList();
@@ -48,50 +34,11 @@ class _RecentPageState extends State<RecentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final makeListTile = ListTile(
-    //     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-    //     leading: Container(
-    //       padding: EdgeInsets.only(right: 12.0),
-    //       decoration: new BoxDecoration(
-    //           border: new Border(
-    //               right: new BorderSide(width: 1.0, color: Colors.black26))),
-    //       child: Icon(Icons.call, color: Colors.red),
-    //     ),
-    //     title: Text(
-    //       "Introduction to Driving",
-    //       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-    //     ),
-    //     subtitle: Row(
-    //       children: <Widget>[
-    //         Icon(Icons.linear_scale, color: Colors.blueGrey),
-    //         Text(" Intermediate", style: TextStyle(color: Colors.black))
-    //       ],
-    //     ),
-    //     trailing: Icon(Icons.call_made, color: Colors.black, size: 30.0));
-
-    // final makeCard = Card(
-    //   elevation: 8.0,
-    //   margin: new EdgeInsets.symmetric(horizontal: 5.0, vertical: 6.0),
-    //   child: Container(
-    //     decoration: BoxDecoration(color: Color.fromRGBO(241, 241, 241, .8)),
-    //     child: makeListTile,
-    //   ),
-    // );
-
-    // final makeBody = Container(
-    //   child: ListView.builder(
-    //     scrollDirection: Axis.vertical,
-    //     shrinkWrap: true,
-    //     itemCount: 10,
-    //     itemBuilder: (BuildContext context, int index) {
-    //       return makeCard;
-    //     },
-    //   ),
-    // );
-
     return new Scaffold(
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: Icon(Icons.contacts),
+            tooltip: 'New Contact',
+            backgroundColor: Colors.blue,
             onPressed: () async {
               Contact contact = await _contactPicker.selectContact();
               print(contact.fullName);
@@ -109,6 +56,7 @@ class _RecentPageState extends State<RecentsPage> {
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
+                        return Center(child: Text('No recent calls so far.'));
                       case ConnectionState.waiting:
                         return Center(child: CircularProgressIndicator());
                       default:
@@ -283,6 +231,8 @@ _launchURL(context, String name, String mobileNumber, String type) async {
   var timestampCallLog = new DateTime.now().toString();
   print(timestampCallLog);
   var _buildContext = context;
+  var CARD_SELECTED = ETISALAT_DAIL_NUMBER;
+  var delimetersForCallWaiting;
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var details = prefs.getStringList("CARD_DETAILS");
@@ -291,8 +241,10 @@ _launchURL(context, String name, String mobileNumber, String type) async {
     print(details[0]);
     print(details[1]);
     print(details[2]);
+    print(details[3]);
 
     if (mobileNumberWithCode != null) {
+      // it removes the mobile number format ex: (504) 990099 or 91-9900-223344
       if (mobileNumberWithCode.contains("-"))
         mobileNumberWithCode = mobileNumberWithCode.replaceAll("-", "");
       if (mobileNumberWithCode.contains("("))
@@ -300,23 +252,38 @@ _launchURL(context, String name, String mobileNumber, String type) async {
       if (mobileNumberWithCode.contains(")"))
         mobileNumberWithCode = mobileNumberWithCode.replaceAll(")", "");
       mobileNumberWithCode = mobileNumberWithCode;
-      // if (mobileNumberWithCode.contains(details[1]))
-      //   mobileNumberWithCode =
-      //       mobileNumberWithCode.replaceFirstMapped(details[1], "0091");
+      // This below code will remove the country code from selected number and replace with dial country code ex : +91 to 0091
+      if (mobileNumberWithCode.contains(details[1]))
+        mobileNumberWithCode =
+            mobileNumberWithCode.replaceFirst(details[1], "");
+      // This code replaces the extra spaces
+      if (mobileNumberWithCode.contains(" "))
+        mobileNumberWithCode = mobileNumberWithCode.replaceAll(" ", "");
+    }
+
+    if (details[3] != null) {
+      int selectionCard = int.parse(details[3]);
+      if (selectionCard == 1) {
+        CARD_SELECTED = ETISALAT_DAIL_NUMBER;
+        delimetersForCallWaiting = ETISALAT_DELIMETERS;
+      } else if (selectionCard == 2) {
+        CARD_SELECTED = DU_DAIL_NUMBER;
+        delimetersForCallWaiting = DU_DELIMETERS;
+      }
     }
 
     String url = "tel:" +
-        ETISALAT_DAIL_NUMBER +
+        CARD_SELECTED +
         details[0] +
-        "#,,,,," +
+        delimetersForCallWaiting +
         details[2] +
         mobileNumberWithCode;
 
     print(url);
 
     // storing call info in database
-    RecentCall recentCall =
-        new RecentCall(name, mobileNumber, type, timestampCallLog, details[1]);
+    RecentCall recentCall = new RecentCall(
+        0, name, mobileNumber, type, timestampCallLog, details[1]);
     _storeDialedNumberToDB(context, recentCall);
 
     if (await canLaunch(url)) {

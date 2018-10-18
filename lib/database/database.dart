@@ -62,10 +62,17 @@ class DBHelper {
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery('SELECT * FROM Recents');
     List<RecentCall> recentCallList = new List();
+
     for (int i = 0; i < list.length; i++) {
-      recentCallList.add(new RecentCall(list[i]["name"], list[i]["mobileno"],
-          list[i]["mobiletype"], list[i]["timestamp"], list[i]["countryCode"]));
+      recentCallList.add(new RecentCall(
+          list[i]["id"],
+          list[i]["name"],
+          list[i]["mobileno"],
+          list[i]["mobiletype"],
+          list[i]["timestamp"],
+          list[i]["countryCode"]));
     }
+    recentCallList.sort((y, x) => x.id.compareTo(y.id));
     print(recentCallList.length);
     return recentCallList;
   }
@@ -98,15 +105,6 @@ class DBHelper {
               recentCall.countryCode +
               '\'' +
               ')');
-      // 'INSERT INTO Recents(id, name, mobileno, mobiletype, timestamp, countryCode) VALUES((?,?,?,?,?,?)',
-      // [
-      //   1212,
-      //   recentCall.name,
-      //   recentCall.mobileNo,
-      //   recentCall.numberType,
-      //   recentCall.timestamp,
-      //   recentCall.countryCode
-      // ]);
     });
   }
 }

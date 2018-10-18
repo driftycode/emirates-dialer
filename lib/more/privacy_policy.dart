@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AboutUs extends StatelessWidget {
+class PrivacyPolicy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dcLogo = Hero(
@@ -10,7 +10,7 @@ class AboutUs extends StatelessWidget {
         child: CircleAvatar(
           radius: 72.0,
           backgroundColor: Colors.transparent,
-          backgroundImage: AssetImage('assets/images/app_logo.png'),
+          backgroundImage: AssetImage('assets/images/privacy_policy.png'),
         ),
       ),
     );

@@ -61,6 +61,7 @@ flutter:
    - assets/country_codes.json
    - assets/images/dc-short-logo.png
    - assets/images/app_logo.png
+   - assets/img_privacy_policy.png
 
 
   fonts:

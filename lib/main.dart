@@ -8,6 +8,7 @@ import 'more/aboutus_page.dart';
 import 'more/settings.dart';
 import 'utils/constants.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'more/privacy_policy.dart';
 
 void main() => runApp(new MyApp());
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
         home: new SplashScreen(
-            seconds: 10,
+            seconds: 3,
             navigateAfterSeconds: new AfterSplash(),
             title: new Text('Welcome to UAEDialer'),
             image: new Image.asset('assets/images/app_logo.png'),
@@ -48,6 +49,7 @@ class AfterSplash extends StatelessWidget {
           GO_HELP: (context) => Help(),
           GO_ABOUTUS: (context) => AboutUs(),
           GO_SETTINGS: (context) => Settings(),
+          GO_PRIVACY: (context) => PrivacyPolicy()
         });
   }
 }

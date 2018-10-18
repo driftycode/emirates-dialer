@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 class MorePage extends StatelessWidget {
   // email launcher for help screen
   _launchEmail() async {
-    const url = 'mailto:hello@driftycode?subject=Help from UAEDialer';
+    const url = "mailto:hello@driftycode?subject=Help%20from%20UAEDialer";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -25,9 +25,9 @@ class MorePage extends StatelessWidget {
       children: [
         ListTile(
           onTap: () {
-            // Navigator.pushNamed(context, GO_SETTINGS);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => Settings()));
+            Navigator.pushNamed(context, GO_SETTINGS);
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (BuildContext context) => Settings()));
           },
           leading: Icon(Icons.settings),
           title: Text('Settings'),
@@ -63,6 +63,14 @@ class MorePage extends StatelessWidget {
           title: Text('Rate us'),
           subtitle: Text('Your feedback is valuable to us to improve quality'),
         ),
+        ListTile(
+          onTap: () {
+            Navigator.pushNamed(context, GO_PRIVACY);
+          },
+          leading: Icon(Icons.rate_review),
+          title: Text('Privacy Policy'),
+          subtitle: Text('Last Updated on Nov 1st,2018'),
+        )
       ],
     ));
   }
