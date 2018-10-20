@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:contact_picker/contact_picker.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:uaedialer/database/database.dart';
+import 'package:emiratesdial/database/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uaedialer/models/recentCall.dart';
-import 'package:uaedialer/utils/constants.dart';
+import 'package:emiratesdial/models/recentCall.dart';
+import 'package:emiratesdial/utils/constants.dart';
 import 'package:flutter/services.dart';
-import 'package:uaedialer/card_page.dart';
+import 'package:emiratesdial/card_page.dart';
 
 class RecentsPage extends StatefulWidget {
   @override

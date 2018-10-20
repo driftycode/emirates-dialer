@@ -1,7 +1,7 @@
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-import 'package:uaedialer/models/country.dart';
+import 'package:emiratesdial/models/country.dart';
 
 Future<String> _loadCountriesAsset() async {
   return await rootBundle.loadString('assets/country_codes.json');

@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UAE Dialer'),
+        title: Text('Emirates Dial'),
       ),
       body: _children[_currentIndex], // new
       bottomNavigationBar: BottomNavigationBar(

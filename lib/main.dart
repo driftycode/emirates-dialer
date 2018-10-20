@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         home: new SplashScreen(
             seconds: 3,
             navigateAfterSeconds: new AfterSplash(),
-            title: new Text('Welcome to UAEDialer'),
+            title: new Text('Welcome to Emirates Dial'),
             image: new Image.asset('assets/images/app_logo.png'),
             backgroundColor: Colors.white,
             styleTextUnderTheLoader: new TextStyle(),
@@ -33,7 +33,7 @@ class AfterSplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-        title: 'UAE Dialer',
+        title: 'Emirates Dial',
         theme: new ThemeData(
             primarySwatch: Colors.red,
             accentColor: Colors.black,
