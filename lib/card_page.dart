@@ -21,7 +21,7 @@ class CardPageState extends State<CardPage> {
   var _referPractice;
   final _textController = TextEditingController();
   var _details;
-  double _result = 0.0;
+  // double _result = 0.0;
   int _radioValue = 0;
 
   @override
@@ -96,7 +96,7 @@ class CardPageState extends State<CardPage> {
                     )
                   ]),
               new Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 20.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 20.0, 10.0, 20.0),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -107,9 +107,9 @@ class CardPageState extends State<CardPage> {
                         ),
                         new Text.rich(
                           TextSpan(
-                            text: 'Etisalat (Five card)',
+                            text: 'Etisalat (Five)',
                             style: TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 16.0,
                                 fontWeight:
                                     FontWeight.bold), // default text style
                           ),
@@ -121,9 +121,9 @@ class CardPageState extends State<CardPage> {
                         ),
                         new Text.rich(
                           TextSpan(
-                            text: 'Du (Hello Card)',
+                            text: 'Du (Hello)',
                             style: TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 16.0,
                                 fontWeight:
                                     FontWeight.bold), // default text style
                           ),

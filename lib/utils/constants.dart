@@ -67,3 +67,4 @@ const DU_DAIL_NUMBER = "80043556,2";
 
 const ETISALAT_DELIMETERS = "#,,,,,";
 const DU_DELIMETERS = "#";
+const TEL_DELIMETER = "tel:";

@@ -17,22 +17,21 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     // Get all contacts
     // Get all contacts
     return Scaffold(
         body: ListView(
       children: [
-        ListTile(
-          onTap: () {
-            Navigator.pushNamed(context, GO_SETTINGS);
-            // Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (BuildContext context) => Settings()));
-          },
-          leading: Icon(Icons.settings),
-          title: Text('Settings'),
-          subtitle: Text('Disable or enable notifications, usage'),
-        ),
+        // ListTile(
+        //   onTap: () {
+        //     Navigator.pushNamed(context, GO_SETTINGS);
+        //     // Navigator.of(context).push(MaterialPageRoute(
+        //     //     builder: (BuildContext context) => Settings()));
+        //   },
+        //   leading: Icon(Icons.settings),
+        //   title: Text('Settings'),
+        //   subtitle: Text('Disable or enable notifications, usage'),
+        // ),
         ListTile(
             onTap: () {
               // navigate to about
@@ -67,7 +66,7 @@ class MorePage extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(context, GO_PRIVACY);
           },
-          leading: Icon(Icons.rate_review),
+          leading: Icon(Icons.copyright),
           title: Text('Privacy Policy'),
           subtitle: Text('Last Updated on Nov 1st,2018'),
         )

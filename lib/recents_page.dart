@@ -34,20 +34,76 @@ class _RecentPageState extends State<RecentsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // this function returns listview with data
+    getDynamicLisview(snapshot) {
+      return Container(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: snapshot.data.length,
+          itemBuilder: (BuildContext context, int index) {
+            print(snapshot.data[index]);
+            return Card(
+              elevation: 4.0,
+              margin: new EdgeInsets.symmetric(horizontal: 2.0, vertical: 5.0),
+              child: Container(
+                decoration:
+                    BoxDecoration(color: Color.fromRGBO(241, 241, 241, .8)),
+                child: ListTile(
+                    onTap: () {
+                      _launchURL(
+                          context,
+                          snapshot.data[index].name,
+                          snapshot.data[index].mobileNo,
+                          snapshot.data[index].numberType);
+                    },
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    leading: Container(
+                      padding: EdgeInsets.only(right: 12.0),
+                      decoration: new BoxDecoration(
+                          border: new Border(
+                              right: new BorderSide(
+                                  width: 1.0, color: Colors.black26))),
+                      child: Icon(Icons.call, color: Colors.red),
+                    ),
+                    title: Text(
+                      snapshot.data[index].name,
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Row(
+                      children: <Widget>[
+                        Icon(Icons.linear_scale, color: Colors.blueGrey),
+                        Text(snapshot.data[index].mobileNo,
+                            style: TextStyle(color: Colors.black))
+                      ],
+                    ),
+                    trailing:
+                        Icon(Icons.call_made, color: Colors.black, size: 30.0)),
+              ),
+            );
+          },
+        ),
+      );
+    }
+
+    final floatingButton = FloatingActionButton(
+        child: Icon(Icons.add),
+        tooltip: 'New Contact',
+        backgroundColor: Colors.blue,
+        onPressed: () async {
+          Contact contact = await _contactPicker.selectContact();
+          print(contact.fullName);
+          setState(() {
+            _contact = contact;
+            print(contact.fullName);
+            _showDialogContactDial(context, _contact);
+          });
+        });
+
     return new Scaffold(
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.contacts),
-            tooltip: 'New Contact',
-            backgroundColor: Colors.blue,
-            onPressed: () async {
-              Contact contact = await _contactPicker.selectContact();
-              print(contact.fullName);
-              setState(() {
-                _contact = contact;
-                print(contact.fullName);
-                _showDialogContactDial(context, _contact);
-              });
-            }),
+        floatingActionButton: floatingButton,
         body: Builder(
           builder: (context) => new Container(
                 padding: new EdgeInsets.all(16.0),
@@ -61,80 +117,31 @@ class _RecentPageState extends State<RecentsPage> {
                         return Center(child: CircularProgressIndicator());
                       default:
                         if (snapshot.hasData) {
-                          return Container(
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                print(snapshot.data[index]);
-                                return Card(
-                                  elevation: 4.0,
-                                  margin: new EdgeInsets.symmetric(
-                                      horizontal: 2.0, vertical: 5.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Color.fromRGBO(241, 241, 241, .8)),
-                                    child: ListTile(
-                                        onTap: () {
-                                          _launchURL(
-                                              context,
-                                              snapshot.data[index].name,
-                                              snapshot.data[index].mobileNo,
-                                              snapshot.data[index].numberType);
-                                        },
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 10.0),
-                                        leading: Container(
-                                          padding: EdgeInsets.only(right: 12.0),
-                                          decoration: new BoxDecoration(
-                                              border: new Border(
-                                                  right: new BorderSide(
-                                                      width: 1.0,
-                                                      color: Colors.black26))),
-                                          child: Icon(Icons.call,
-                                              color: Colors.red),
-                                        ),
-                                        title: Text(
-                                          snapshot.data[index].name,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.linear_scale,
-                                                color: Colors.blueGrey),
-                                            Text(snapshot.data[index].mobileNo,
-                                                style: TextStyle(
-                                                    color: Colors.black))
-                                          ],
-                                        ),
-                                        trailing: Icon(Icons.call_made,
-                                            color: Colors.black, size: 30.0)),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                          // return new ListView.builder(
-                          //     itemCount: snapshot.data.length,
-                          //     itemBuilder: (context, index) {
-                          //       return new Column(
-                          //           crossAxisAlignment:
-                          //               CrossAxisAlignment.start,
-                          //           children: <Widget>[
-                          //             new Text(snapshot.data[index].name,
-                          //                 style: _textStyle(18.0)),
-                          //             new Text(snapshot.data[index].mobileNo,
-                          //                 style: _textStyle(14.0)),
-                          //             new Divider()
-                          //           ]);
-                          //     });
+                          if (snapshot.data.length == 0) {
+                            return new Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  new Center(
+                                      child: Container(
+                                          child: new Column(children: <Widget>[
+                                    new Text('No recent calls so far.',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16.0)),
+                                    new Text(
+                                        'Click on + button for all contacts',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16.0))
+                                  ])))
+                                ]);
+                          } else
+                            return getDynamicLisview(snapshot);
                         } else if (snapshot.error ||
                             snapshot.data.length == 0) {
-                          return new Text("${snapshot.error}");
+                          return new Container(
+                              child: Center(
+                                  child: Text('No recent calls so far.')));
                         }
                     }
                   },
@@ -143,10 +150,6 @@ class _RecentPageState extends State<RecentsPage> {
         ));
   }
 }
-
-// _textStyle(double fontSize) {
-//   return new TextStyle(fontWeight: FontWeight.w400, fontSize: fontSize);
-// }
 
 _storeDialedNumberToDB(BuildContext context, RecentCall callRecord) async {
   DBHelper db = new DBHelper();
@@ -179,8 +182,6 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
                 autofocus: false,
                 initialValue: contactRecord.phoneNumber.number,
               ),
-              //new Text(contactRecord.fullName),
-              //new Text(contactRecord.phoneNumber.toString()),
             ],
           ),
         ),
@@ -192,15 +193,13 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
             ),
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              var url = "tel:9908693377";
+              // var url = "tel:9908693377";
 
               _launchURL(
                   context,
                   contactRecord.fullName,
                   contactRecord.phoneNumber.number,
                   contactRecord.phoneNumber.label);
-              // _launchURL(contactRecord.phoneNumber.number,
-              //     contactRecord.phoneNumber.label);
             },
           ),
           new FlatButton(
@@ -216,22 +215,13 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
   );
 }
 
-// _launchURL(String mobileNumber, String name) async {
-//   String url = "tel:" + mobileNumber;
-//   if (await canLaunch(url)) {
-//     await launch(url);
-//   } else {
-//     throw 'Could not launch $url';
-//   }
-// }
-
 _launchURL(context, String name, String mobileNumber, String type) async {
   // Dialer number with have etisalat dial number, and card number which is registered in the mobile app
   var mobileNumberWithCode = mobileNumber;
   var timestampCallLog = new DateTime.now().toString();
   print(timestampCallLog);
   var _buildContext = context;
-  var CARD_SELECTED = ETISALAT_DAIL_NUMBER;
+  var CARD_SELECTED;
   var delimetersForCallWaiting;
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -272,7 +262,7 @@ _launchURL(context, String name, String mobileNumber, String type) async {
       }
     }
 
-    String url = "tel:" +
+    String url = TEL_DELIMETER +
         CARD_SELECTED +
         details[0] +
         delimetersForCallWaiting +
@@ -296,12 +286,13 @@ _launchURL(context, String name, String mobileNumber, String type) async {
     // Scaffold.of(context)
     //     .showSnackBar(SnackBar(content: Text("No card details are saved")));
     Scaffold.of(context).showSnackBar(new SnackBar(
-      content: new Text('No card details are saved'),
+      content: new Text(
+          'No card details are saved. register the card and try again'),
       duration: new Duration(seconds: 5),
-      action: new SnackBarAction(
-        label: 'CARD PAGE',
-        onPressed: _retryPressed(_buildContext),
-      ),
+      // action: new SnackBarAction(
+      //   label: 'CARD PAGE',
+      //   onPressed: _retryPressed(_buildContext),
+      // ),
     ));
   }
 }
