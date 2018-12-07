@@ -34,7 +34,7 @@ const EdgeInsets kTabLabelPadding = EdgeInsets.symmetric(horizontal: 12.0);
 /// The padding added around material list items.
 const EdgeInsets kMaterialListPadding = EdgeInsets.symmetric(vertical: 8.0);
 
-const String BTN_ADD_TEXT = "Add";
+const String BTN_SAVE_TEXT = "SAVE";
 const String BTN_CLEAR_TEXT = "Clear";
 
 // shared preference keys
@@ -44,7 +44,7 @@ const String CARD_DETAILS = "card_details";
 const CONST_SELECT = "Select";
 
 // Hints
-const HING_ENTER_NUMBER = 'Enter Card Number';
+const HING_ENTER_NUMBER = '12345-XXXXX-09989';
 
 // error messages
 const ERROR_CARD_DETAILS = "Please enter VALID CARD number";
@@ -60,3 +60,11 @@ const GO_MORE = '/more';
 const GO_HELP = '/help';
 const GO_ABOUTUS = '/aboutus';
 const GO_SETTINGS = '/settings';
+const GO_PRIVACY = '/privacy';
+
+const ETISALAT_DAIL_NUMBER = "800505,9,";
+const DU_DAIL_NUMBER = "80043556,2";
+
+const ETISALAT_DELIMETERS = "#,,,,,,,";
+const DU_DELIMETERS = "#";
+const TEL_DELIMETER = "tel:";

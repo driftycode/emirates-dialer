@@ -1,4 +1,4 @@
-package com.example.uaedialer
+package com.driftycode.emiratesdialer
 
 import android.os.Bundle
 

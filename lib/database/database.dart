@@ -3,7 +3,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:uaedialer/models/recentCall.dart';
+import 'package:emiratesdial/models/recentCall.dart';
 
 class DBHelper {
   static Database _db;
@@ -17,7 +17,7 @@ class DBHelper {
   //Creating a database with name test.dn in your directory
   initDb() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "uaedialer.db");
+    String path = join(documentsDirectory.path, "EmiratesDial.db");
     var theDb = await openDatabase(path, version: 1, onCreate: _onCreate);
     print("DB created" + theDb.getVersion().toString());
     print("Path ");
@@ -32,40 +32,21 @@ class DBHelper {
     print("Created tables");
   }
 
-  // Retrieving recent calls from Recents Tables
-  // Future<List<RecentCall>> getRecentCallsList() async {
-  //   var dbClient = await db;
-  //   List<Map> list;
-  //   try {
-  //     list = await dbClient.rawQuery('SELECT * FROM Recents');
-  //     print("List Length " + list.length.toString());
-  //   } on DatabaseException catch (e) {
-  //     print(e.isSyntaxError());
-  //   }
-
-  //   List<RecentCall> recentCalls = new List();
-  //   if (list != null && list.length > 0) {
-  //     for (int i = 0; i < list.length; i++) {
-  //       recentCalls.add(new RecentCall(
-  //           list[i]["name"],
-  //           list[i]["mobileno"],
-  //           list[i]["mobiletype"],
-  //           list[i]["timestamp"],
-  //           list[i]["countryCode"]));
-  //     }
-  //     print("length of the recent list" + recentCalls.length.toString());
-  //   }
-  //   return recentCalls;
-  // }
-
   Future<List<RecentCall>> getRecentCallsList() async {
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery('SELECT * FROM Recents');
     List<RecentCall> recentCallList = new List();
+
     for (int i = 0; i < list.length; i++) {
-      recentCallList.add(new RecentCall(list[i]["name"], list[i]["mobileno"],
-          list[i]["mobiletype"], list[i]["timestamp"], list[i]["countryCode"]));
+      recentCallList.add(new RecentCall(
+          list[i]["id"],
+          list[i]["name"],
+          list[i]["mobileno"],
+          list[i]["mobiletype"],
+          list[i]["timestamp"],
+          list[i]["countryCode"]));
     }
+    recentCallList.sort((y, x) => x.id.compareTo(y.id));
     print(recentCallList.length);
     return recentCallList;
   }
@@ -98,15 +79,6 @@ class DBHelper {
               recentCall.countryCode +
               '\'' +
               ')');
-      // 'INSERT INTO Recents(id, name, mobileno, mobiletype, timestamp, countryCode) VALUES((?,?,?,?,?,?)',
-      // [
-      //   1212,
-      //   recentCall.name,
-      //   recentCall.mobileNo,
-      //   recentCall.numberType,
-      //   recentCall.timestamp,
-      //   recentCall.countryCode
-      // ]);
     });
   }
 }
