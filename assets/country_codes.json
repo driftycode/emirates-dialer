@@ -1,4 +1,18 @@
-[
+[{
+        "name": "India",
+        "dial_code": "+91",
+        "code": "IN"
+    },
+    {
+        "name": "Pakistan",
+        "dial_code": "+92",
+        "code": "PK"
+    },
+    {
+        "name": "Bangladesh",
+        "dial_code": "+880",
+        "code": "BD"
+    },
     {
         "name": "Israel",
         "dial_code": "+972",
@@ -84,11 +98,7 @@
         "dial_code": "+973",
         "code": "BH"
     },
-    {
-        "name": "Bangladesh",
-        "dial_code": "+880",
-        "code": "BD"
-    },
+
     {
         "name": "Barbados",
         "dial_code": "+1 246",
@@ -168,11 +178,6 @@
         "name": "Cameroon",
         "dial_code": "+237",
         "code": "CM"
-    },
-    {
-        "name": "Canada",
-        "dial_code": "+1",
-        "code": "CA"
     },
     {
         "name": "Cape Verde",
@@ -434,11 +439,7 @@
         "dial_code": "+354",
         "code": "IS"
     },
-    {
-        "name": "India",
-        "dial_code": "+91",
-        "code": "IN"
-    },
+
     {
         "name": "Indonesia",
         "dial_code": "+62",
@@ -704,11 +705,7 @@
         "dial_code": "+968",
         "code": "OM"
     },
-    {
-        "name": "Pakistan",
-        "dial_code": "+92",
-        "code": "PK"
-    },
+
     {
         "name": "Palau",
         "dial_code": "+680",
@@ -933,21 +930,6 @@
         "name": "Ukraine",
         "dial_code": "+380",
         "code": "UA"
-    },
-    {
-        "name": "United Arab Emirates",
-        "dial_code": "+971",
-        "code": "AE"
-    },
-    {
-        "name": "United Kingdom",
-        "dial_code": "+44",
-        "code": "GB"
-    },
-    {
-        "name": "United States",
-        "dial_code": "+1",
-        "code": "US"
     },
     {
         "name": "Uruguay",
