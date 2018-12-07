@@ -168,7 +168,7 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
 
   return showDialog<Null>(
     context: context,
-    barrierDismissible: false, // user must tap button!
+    barrierDismissible: true, // user must tap button!
     builder: (BuildContext dialogContext) {
       return new AlertDialog(
         title: new Text('Confirm Number'),
@@ -206,7 +206,7 @@ Future<Null> _showDialogContactDial(context, Contact contactRecord) async {
             color: Colors.red,
             child: new Text('Close', style: TextStyle(color: Colors.white)),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(dialogContext).pop();
             },
           ),
         ],
@@ -220,7 +220,7 @@ _launchURL(context, String name, String mobileNumber, String type) async {
   var mobileNumberWithCode = mobileNumber;
   var timestampCallLog = new DateTime.now().toString();
   print(timestampCallLog);
-  var _buildContext = context;
+  // var _buildContext = context;
   var CARD_SELECTED;
   var delimetersForCallWaiting;
 

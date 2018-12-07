@@ -7,7 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 class MorePage extends StatelessWidget {
   // email launcher for help screen
   _launchEmail() async {
-    const url = "mailto:hello@driftycode?subject=Help%20from%20UAEDialer";
+    const url =
+        "mailto:hello@driftycode.com;nbadiganti@gmail.com?subject=Help%20from%20UAEDialer";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -56,7 +57,8 @@ class MorePage extends StatelessWidget {
         ListTile(
           onTap: () {
             LaunchReview.launch(
-                androidAppId: "com.facebook.katana", iOSAppId: "284882215");
+                androidAppId: "com.driftycode.emiratesdialer",
+                iOSAppId: "284882215");
           },
           leading: Icon(Icons.rate_review),
           title: Text('Rate us'),

@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
         home: new SplashScreen(
-            seconds: 3,
+            seconds: 2,
             navigateAfterSeconds: new AfterSplash(),
             title: new Text('Welcome to Emirates Dial'),
             image: new Image.asset('assets/images/app_logo.png'),

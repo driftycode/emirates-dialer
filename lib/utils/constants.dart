@@ -65,6 +65,6 @@ const GO_PRIVACY = '/privacy';
 const ETISALAT_DAIL_NUMBER = "800505,9,";
 const DU_DAIL_NUMBER = "80043556,2";
 
-const ETISALAT_DELIMETERS = "#,,,,,";
+const ETISALAT_DELIMETERS = "#,,,,,,,";
 const DU_DELIMETERS = "#";
 const TEL_DELIMETER = "tel:";

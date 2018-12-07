@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // email launcher for help screen
+    _launchEmail() async {
+      const url =
+          "mailto:hello@driftycode.com;nbadiganti@gmail.com?subject=Project%20enquiry%20from%20UAEDialer";
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+
     final dcLogo = Hero(
       tag: 'hero',
       child: Padding(
@@ -65,10 +77,24 @@ class AboutUs extends StatelessWidget {
 
     // )
 
+    final contactBtn = new RaisedButton(
+      child: const Text(
+        'Email us',
+        style: TextStyle(color: Colors.white),
+      ),
+      color: Colors.red,
+      elevation: 4.0,
+      splashColor: Colors.red,
+      onPressed: () {
+        _launchEmail();
+      },
+    );
+
     final aboutUs = Padding(
         padding: EdgeInsets.all(15.0),
         child: new Container(
-            child: new Column(children: <Widget>[aboutus1, aboutus2])));
+            child: new Column(
+                children: <Widget>[aboutus1, aboutus2, contactBtn])));
 
     final body = Container(
       width: MediaQuery.of(context).size.width,
