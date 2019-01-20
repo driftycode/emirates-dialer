@@ -1,7 +1,9 @@
 # Flutter EmiratesDialer
 
-Building a UAEDialer Clone in Flutter.
+Building a EmiratesDial in Flutter.
 This app helps expats to call their countries with low cost call rate and automate calling process for hello and five celluar card from Du and Etisalat network
+
+[Install from Playstore](https://play.google.com/store/apps/details?id=com.driftycode.emiratesdialer)
 
 ### Show some :heart: and star the repo to support the project
 
